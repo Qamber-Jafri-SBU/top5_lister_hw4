@@ -120,6 +120,8 @@ loginUser = async (req, res) => {
             .json({
                 success: true,
                 user: {
+                    firstName: loggedInUser.firstName,
+                    lastName: loggedInUser.lastName,
                     email:email
                 }
             }).send();
