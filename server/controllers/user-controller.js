@@ -5,13 +5,13 @@ const bcrypt = require('bcryptjs')
 getLoggedIn = async (req, res) => {
     try{
         auth.verify(req, res, async function () {
-                const loggedInUser = await User.findOne({ _id: req.body.userId });
-                console.log("lg in user : " + loggedInUser);
+                const loggedInUser = await User.findOne({ _id: req.userId });
+
                 if(!loggedInUser){
                     return res.status(200).json({
                         loggedIn: false,
                         user: null
-                    }).send();
+                    })
                 }
 
                 return res.status(200).json({
@@ -21,10 +21,9 @@ getLoggedIn = async (req, res) => {
                         lastName: loggedInUser.lastName,
                         email: loggedInUser.email
                     }
-                }).send();
+                })
         })
     }catch(e){
-        console.log("\nbruh\n")
         console.error(e);
         res.status(500).send();
     }
@@ -84,6 +83,7 @@ registerUser = async (req, res) => {
             sameSite: "none"
         }).status(200).json({
             success: true,
+            loggedIn: true,
             user: {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
@@ -99,11 +99,9 @@ registerUser = async (req, res) => {
 loginUser = async (req, res) => {
     try {
         const {email, password} = req.body;
-        console.log(email);
         const loggedInUser = await User.findOne({ email: email });
         const verifyPassword = await bcrypt.compare(password, loggedInUser.passwordHash);
 
-        console.log("password verify : " + verifyPassword);
         if(!verifyPassword){
             return res
                 .status(400)
@@ -119,6 +117,7 @@ loginUser = async (req, res) => {
         }).status(200)
             .json({
                 success: true,
+                loggedIn: true,
                 user: {
                     firstName: loggedInUser.firstName,
                     lastName: loggedInUser.lastName,
@@ -132,8 +131,29 @@ loginUser = async (req, res) => {
     }
 }
 
+logoutUser = async (req, res) => {
+    try{
+
+        const token = "";
+        await res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        }).status(200)
+            .json({
+                success: true,
+                loggedIn: false,
+                user: null
+            }).send();
+    }catch(error){
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
 module.exports = {
     getLoggedIn,
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

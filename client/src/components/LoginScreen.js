@@ -16,13 +16,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { GlobalStoreContext } from '../store'
-
+import ErrorModal from './ErrorModal';
 
 
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext)
     
+    const [open, setOpen] = React.useState(true);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -38,6 +42,7 @@ export default function LoginScreen() {
       const theme = createTheme();
       
   return (
+    // <div>
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -120,7 +125,13 @@ export default function LoginScreen() {
             </Box>
           </Box>
         </Grid>
+      {/* <ErrorModal
+        open = {open}
+        handleOpen = {handleOpen}
+        handleClose = {handleClose}
+      /> */}
       </Grid>
     </ThemeProvider>
+//  </div>
   );
 }
