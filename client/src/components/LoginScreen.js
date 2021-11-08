@@ -23,27 +23,31 @@ export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext)
     
-    const [open, setOpen] = React.useState(true);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [open, setOpen] = React.useState(auth.errorMessage? true: false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        event.stopPropagation();
         const formData = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
 
         auth.loginUser({
             email: formData.get('email'),
             password: formData.get('password'),
+            errorMessage: ""
         }, store);
 
-    };
+        // auth.getLoggedIn({}, auth);
+      };
       
       const theme = createTheme();
       
   return (
     // <div>
     <ThemeProvider theme={theme}>
+      <ErrorModal
+        open = {(auth.errorMessage !== "")}
+      />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -125,11 +129,6 @@ export default function LoginScreen() {
             </Box>
           </Box>
         </Grid>
-      {/* <ErrorModal
-        open = {open}
-        handleOpen = {handleOpen}
-        handleClose = {handleClose}
-      /> */}
       </Grid>
     </ThemeProvider>
 //  </div>

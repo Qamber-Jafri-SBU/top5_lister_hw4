@@ -11,7 +11,9 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { GlobalStoreContext } from '../store'
+import ErrorModal from './ErrorModal';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
@@ -29,7 +31,10 @@ export default function RegisterScreen() {
         }, store);
     };
 
+    const theme = createTheme();
+
     return (
+        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -47,6 +52,9 @@ export default function RegisterScreen() {
                         Sign up
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <ErrorModal
+                    open = {(auth.errorMessage !== "")}
+                />
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -121,5 +129,6 @@ export default function RegisterScreen() {
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
             </Container>
+        </ThemeProvider>
     );
 }

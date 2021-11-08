@@ -7,6 +7,7 @@ import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import React from 'react';
 import { Alert } from '@mui/material';
+import { useCallback } from 'react';
 
 const style = {
   position: 'absolute',
@@ -20,14 +21,19 @@ const style = {
   p: 4,
 };
 
-export default function ErrorModal() {
-    // const { auth } = useContext(AuthContext);
-    // const { store } = useContext(GlobalStoreContext);
+export default function ErrorModal({open}) {
+    const { auth } = useContext(AuthContext);
+
+
+    function handleClose(event) {
+      event.stopPropagation();
+      auth.closeModal();
+    }
 
     return (
         <Modal
-          // onClose={handleClose}
-          open={this.props.open}
+          onClose={handleClose}
+          open={open}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -35,10 +41,8 @@ export default function ErrorModal() {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Error
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-            </Typography>
-          <Button variant="outlined" onClick={this.props.handleClose}>Close</Button>
+            <Alert severity="error">{auth.errorMessage}</Alert>
+          <Button variant="outlined" onClick={handleClose}>Close</Button>
           </Box>
         </Modal>
     );

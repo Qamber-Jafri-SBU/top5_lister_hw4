@@ -8,9 +8,10 @@ getLoggedIn = async (req, res) => {
                 const loggedInUser = await User.findOne({ _id: req.userId });
 
                 if(!loggedInUser){
-                    return res.status(200).json({
+                    return res.status(201).json({
                         loggedIn: false,
-                        user: null
+                        user: null,
+                        errorMessage: ""
                     })
                 }
 
@@ -20,7 +21,8 @@ getLoggedIn = async (req, res) => {
                         firstName: loggedInUser.firstName,
                         lastName: loggedInUser.lastName,
                         email: loggedInUser.email
-                    }
+                    },
+                    errorMessage: ""
                 })
         })
     }catch(e){
@@ -34,19 +36,19 @@ registerUser = async (req, res) => {
         const { firstName, lastName, email, password, passwordVerify } = req.body;
         if (!firstName || !lastName || !email || !password || !passwordVerify) {
             return res
-                .status(400)
+                .status(201)
                 .json({ errorMessage: "Please enter all required fields." });
         }
         if (password.length < 8) {
             return res
-                .status(400)
+                .status(201)
                 .json({
                     errorMessage: "Please enter a password of at least 8 characters."
                 });
         }
         if (password !== passwordVerify) {
             return res
-                .status(400)
+                .status(201)
                 .json({
                     errorMessage: "Please enter the same password twice."
                 })
@@ -55,7 +57,7 @@ registerUser = async (req, res) => {
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res
-                .status(400)
+                .status(201)
                 .json({
                     success: false,
                     errorMessage: "An account with this email address already exists."
@@ -88,7 +90,8 @@ registerUser = async (req, res) => {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
                 email: savedUser.email
-            }
+            },
+            errorMessage: ""
         }).send();
     } catch (err) {
         console.error(err);
@@ -104,7 +107,7 @@ loginUser = async (req, res) => {
 
         if(!verifyPassword){
             return res
-                .status(400)
+                .status(201)
                 .json({ errorMessage: "Incorrect Password." });
         }
 
@@ -122,7 +125,8 @@ loginUser = async (req, res) => {
                     firstName: loggedInUser.firstName,
                     lastName: loggedInUser.lastName,
                     email:email
-                }
+                },
+                errorMessage: ""
             }).send();
 
     } catch (err) {
@@ -143,10 +147,11 @@ logoutUser = async (req, res) => {
             .json({
                 success: true,
                 loggedIn: false,
-                user: null
+                user: null,
+                errorMessage: ""
             }).send();
     }catch(error){
-        console.error(err);
+        console.error(error);
         res.status(500).send();
     }
 }

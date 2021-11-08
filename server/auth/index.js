@@ -4,19 +4,18 @@ function authManager() {
     verify = function (req, res, next) {
         try {
             const token = req.cookies.token;
-            // console.log(token);
             if (!token) {
                 return res.status(200).json({
                     loggedIn: false,
                     user: null,
-                    errorMessage: "Not Logged In."
+                    errorMessage: ""
                 })
             }
             if(token == ""){
                 return res.status(200).json({
                     loggedIn: false,
                     user: null,
-                    errorMessage: "Not Logged In."
+                    errorMessage: ""
                 }) 
             }
 
