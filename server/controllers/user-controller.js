@@ -102,6 +102,13 @@ loginUser = async (req, res) => {
     try {
         const {email, password} = req.body;
         const loggedInUser = await User.findOne({ email: email });
+
+        if(!loggedInUser){
+            return res
+                .status(201)
+                .json({ errorMessage: "No user exists with that email." });
+        }
+
         const verifyPassword = await bcrypt.compare(password, loggedInUser.passwordHash);
 
         if(!verifyPassword){
