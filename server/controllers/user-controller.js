@@ -6,14 +6,13 @@ getLoggedIn = async (req, res) => {
     try{
         auth.verify(req, res, async function () {
                 const loggedInUser = await User.findOne({ _id: req.userId });
-
-                if(!loggedInUser){
-                    return res.status(201).json({
-                        loggedIn: false,
-                        user: null,
-                        errorMessage: ""
-                    })
-                }
+                // if(!loggedInUser){
+                //     return res.status(201).json({
+                //         loggedIn: false,
+                //         user: null,
+                //         errorMessage: ""
+                //     })
+                // }
 
                 return res.status(200).json({
                     loggedIn: true,
@@ -79,7 +78,7 @@ registerUser = async (req, res) => {
         // LOGIN THE USER
         const token = auth.signToken(savedUser);
 
-        await res.cookie("token", token, {
+        return res.cookie("token", token, {
             httpOnly: true,
             secure: true,
             sameSite: "none"
@@ -92,7 +91,7 @@ registerUser = async (req, res) => {
                 email: savedUser.email
             },
             errorMessage: ""
-        }).send();
+        })
     } catch (err) {
         console.error(err);
         res.status(500).send();
@@ -113,7 +112,7 @@ loginUser = async (req, res) => {
 
         const token = auth.signToken(loggedInUser);
 
-        await res.cookie("token", token, {
+        return res.cookie("token", token, {
             httpOnly: true,
             secure: true,
             sameSite: "none"
@@ -127,7 +126,7 @@ loginUser = async (req, res) => {
                     email:email
                 },
                 errorMessage: ""
-            }).send();
+            })
 
     } catch (err) {
         console.error(err);
@@ -139,7 +138,7 @@ logoutUser = async (req, res) => {
     try{
 
         const token = "";
-        await res.cookie("token", token, {
+        return res.cookie("token", token, {
             httpOnly: true,
             secure: true,
             sameSite: "none"
@@ -149,7 +148,7 @@ logoutUser = async (req, res) => {
                 loggedIn: false,
                 user: null,
                 errorMessage: ""
-            }).send();
+            })
     }catch(error){
         console.error(error);
         res.status(500).send();

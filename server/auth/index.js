@@ -16,7 +16,7 @@ function authManager() {
                     loggedIn: false,
                     user: null,
                     errorMessage: ""
-                }) 
+                })
             }
 
             const verified = jwt.verify(token, process.env.JWT_SECRET)

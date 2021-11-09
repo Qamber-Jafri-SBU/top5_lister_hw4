@@ -22,9 +22,9 @@ function AuthContextProvider(props) {
     });
     const history = useHistory();
 
-    // useEffect(() => {
-    //     auth.getLoggedIn();
-    // }, [auth]);
+    useEffect(() => {
+        auth.getLoggedIn();
+    });
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -139,7 +139,6 @@ function AuthContextProvider(props) {
                 store.loadIdNamePairs();
             }
             if (response.status === 201) {
-                console.log("plz : " + response.data.errorMessage)
                 authReducer({
                     type: AuthActionType.LOGIN_FAILURE,
                     payload: {

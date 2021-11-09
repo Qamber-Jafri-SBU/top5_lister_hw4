@@ -1,13 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import AuthContext from '../auth';
-import { GlobalStoreContext } from '../store'
 import { Modal } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import React from 'react';
 import { Alert } from '@mui/material';
-import { useCallback } from 'react';
 
 const style = {
   position: 'absolute',

@@ -22,8 +22,6 @@ import ErrorModal from './ErrorModal';
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext)
-    
-    const [open, setOpen] = React.useState(auth.errorMessage? true: false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +41,6 @@ export default function LoginScreen() {
       const theme = createTheme();
       
   return (
-    // <div>
     <ThemeProvider theme={theme}>
       <ErrorModal
         open = {(auth.errorMessage !== "")}
@@ -131,6 +128,5 @@ export default function LoginScreen() {
         </Grid>
       </Grid>
     </ThemeProvider>
-//  </div>
   );
 }
