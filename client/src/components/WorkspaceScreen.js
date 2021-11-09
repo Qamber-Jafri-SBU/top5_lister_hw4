@@ -3,6 +3,7 @@ import Top5Item from './Top5Item.js'
 import List from '@mui/material/List';
 import { Typography } from '@mui/material'
 import { GlobalStoreContext } from '../store/index.js'
+import { useHistory } from 'react-router-dom'
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -11,7 +12,8 @@ import { GlobalStoreContext } from '../store/index.js'
 */
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
-
+    store.history = useHistory();
+    
     let editItems = "";
     if (store.currentList) {
         editItems = 
@@ -19,6 +21,7 @@ function WorkspaceScreen() {
                 {
                     store.currentList.items.map((item, index) => (
                         <Top5Item 
+                            id={'top5-item-' + (index+1)}
                             key={'top5-item-' + (index+1)}
                             text={item}
                             index={index} 
