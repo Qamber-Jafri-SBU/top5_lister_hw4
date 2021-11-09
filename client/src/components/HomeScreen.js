@@ -17,7 +17,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         store.loadIdNamePairs();
-    });
+    }, []);
 
     function handleCreateNewList() {
         // try{
@@ -63,9 +63,9 @@ const HomeScreen = () => {
                     {
                         listCard
                     }
-                    {/* <DeleteModal 
-                    // open={(store.listMarkedForDeletion !== null)}
-                    /> */}
+                    <DeleteModal 
+                    open={(store.listMarkedForDeletion !== null)}
+                    />
                 </div>
             </div>
         </ThemeProvider>)
