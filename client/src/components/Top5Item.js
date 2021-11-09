@@ -14,17 +14,10 @@ import EditIcon from '@mui/icons-material/Edit';
 function Top5Item(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
-    const [text, setText] = useState("");
+    // const [text, setText] = useState("");
     const [draggedTo, setDraggedTo] = useState(0);
 
-
-    function handleLoadList(event, id) {
-        if (!event.target.disabled) {        
-            // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
-        }
-    }
-
+    
     function handleToggleEdit(event) {
         event.stopPropagation();
         toggleEdit();
@@ -41,13 +34,18 @@ function Top5Item(props) {
     function handleKeyPress(event) {
         if (event.code === "Enter") {
             let id = event.target.id.substring("list-".length);
+            if(text === props.text){
+                toggleEdit();
+                return;
+            }
             store.addUpdateItemTransaction(id, text);
             toggleEdit();
         }
     }
 
     function handleUpdateText(event) {
-        setText(event.target.value);
+        // setText(event.target.value);
+        text = event.target.value;
     }
 
 
@@ -79,10 +77,14 @@ function Top5Item(props) {
 
         console.log("handleDrop (sourceId, targetId): ( " + sourceId + ", " + targetId + ")");
 
+        if(sourceId == targetId){
+            return;
+        }
+
         // UPDATE THE LIST
         store.addMoveItemTransaction(sourceId, targetId);
     }
-
+    let text = props.text;
     let { index } = props;
 
     let itemClass = "top5-item";

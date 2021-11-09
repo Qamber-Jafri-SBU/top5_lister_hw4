@@ -13,17 +13,29 @@ import CloseIcon from '@mui/icons-material/HighlightOff';
 */
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
-
+    
     function handleUndo() {
         store.undo();
     }
     function handleRedo() {
         store.redo();
     }
+
+    function canUndo() {
+        return store.canUndo();
+    }
+
+    function canRedo() {
+        return store.canRedo();
+    }
+    
     function handleClose() {
         store.closeCurrentList();
     }
     let editStatus = false;
+    let undoStatus = canUndo();
+    let redoStatus = canRedo();
+
     if (store.isListNameEditActive) {
         editStatus = true;
     }  
@@ -32,12 +44,14 @@ function EditToolbar() {
             <Button 
                 id='undo-button'
                 onClick={handleUndo}
+                disabled={!undoStatus}
                 variant="contained">
                     <UndoIcon />
             </Button>
             <Button 
                 id='redo-button'
                 onClick={handleRedo}
+                disabled={!redoStatus}
                 variant="contained">
                     <RedoIcon />
             </Button>

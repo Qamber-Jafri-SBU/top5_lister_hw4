@@ -17,14 +17,11 @@ const HomeScreen = () => {
 
     useEffect(() => {
         store.loadIdNamePairs();
+        store.clearAllTransactions();
     }, []);
 
     function handleCreateNewList() {
-        // try{
-            store.createNewList();
-        // }catch(e){
-        //     console.error(e);
-        // }
+        store.createNewList();
     }
 
     const theme = createTheme();

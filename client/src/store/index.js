@@ -194,6 +194,10 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.clearAllTransactions = function () {
+        tps.clearAllTransactions();
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         tps.clearAllTransactions();
@@ -310,6 +314,8 @@ function GlobalStoreContextProvider(props) {
 
     store.addUpdateItemTransaction = function (index, newText) {
         let oldText = store.currentList.items[index];
+        console.log(oldText)
+        console.log(newText)
         let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
         tps.addTransaction(transaction);
     }
